@@ -61,6 +61,7 @@ func initConfig() *viper.Viper {
 	return globalConfig
 
 }
+
 func dynamicConfig() {
 	globalConfig.WatchConfig()
 	/* fmt.Println("redis port before sleep: ", GlobalConfig.Get("redis.port"))
@@ -78,7 +79,7 @@ func GetConfigInfo() Config {
 	globalConfig.Unmarshal(&c)
 	return c
 }
-func GetGlobalConfig() *viper.Viper {
 
+func GetGlobalConfig() *viper.Viper {
 	return globalConfig
 }

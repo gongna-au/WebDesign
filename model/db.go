@@ -15,7 +15,7 @@ var lock = &sync.Mutex{}
 
 //包外不可以调用
 //写个接口专门给客户端调用
-func getInstance() *gorm.DB {
+func init() {
 	var err error
 	if db == nil {
 		lock.Lock()
@@ -34,7 +34,6 @@ func getInstance() *gorm.DB {
 		}
 	}
 
-	return db
 }
 
 func getDBConfig() string {
@@ -55,5 +54,8 @@ func getDBConfig() string {
 }
 
 func GetDBInstance() *gorm.DB {
-	return getInstance()
+	return db
+}
+func DBInstanceClose() {
+	db.Close()
 }

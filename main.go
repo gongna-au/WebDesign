@@ -2,21 +2,24 @@ package main
 
 import (
 	"fmt"
-	//config "github.com/LeetCode/LibBook/DB/config"
-	model "github.com/WebDesign/model"
+	"github.com/WebDesign/config"
+	//"github.com/WebDesign/log"
+	"github.com/WebDesign/model"
+	//"go.uber.org/zap"
+
 	"time"
 )
 
 func main() {
-	//配置文件初始化
-	//config.ConfigInit()
-	//数据的初始化
+
 	DB1 := model.GetDBInstance()
 	DB2 := model.GetDBInstance()
 	if DB1 == DB2 {
 		fmt.Println("equal")
 	}
-
+	c := config.GetConfigInfo()
+	fmt.Println(c.MySQL)
 	fmt.Println("main wait ")
+	//log.Info("ferjwfgnerk", zap.String("get", "tettttt"))
 	time.Sleep(time.Second * 30)
 }
