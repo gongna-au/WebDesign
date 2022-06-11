@@ -11,3 +11,7 @@ LogLevel = "DEBUG"
 [redis]
   ip = "127.0.0.1"
   port = 4344
+
+[token]
+  expired: 30 # 过期时间 30 天
+  

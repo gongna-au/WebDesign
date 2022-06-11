@@ -2,16 +2,21 @@ package model
 
 import (
 	"fmt"
+	"log"
+	"sync"
+
 	config "github.com/WebDesign/config"
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/mysql"
 	"go.uber.org/zap"
-	"log"
-	"sync"
 )
 
+//第一种写法
 var db *gorm.DB
-var lock = &sync.Mutex{}
+var once sync.Once
+
+/* 第二种写法
+ var lock = &sync.Mutex{}
 
 //包外不可以调用
 //写个接口专门给客户端调用
@@ -32,6 +37,29 @@ func init() {
 		} else {
 			log.Fatal("Single instance already created.")
 		}
+	}
+
+} */
+
+func init() {
+	var err error
+	if db == nil {
+		once.Do(func() {
+			fmt.Println("Creating database single instance now.")
+			db, err = gorm.Open("mysql", getDBConfig())
+			if err != nil {
+				log.Fatal("Open database failed",
+					zap.String("reason", err.Error()),
+					zap.String("detail", "Database connection failed."))
+
+			}
+
+		})
+
+	} else {
+		log.Fatal("Warning:connect to the database again",
+			zap.String("reason", "Database instance already created."),
+			zap.String("detail", "Connect to Database again failed."))
 	}
 
 }
