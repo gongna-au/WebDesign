@@ -1,25 +1,31 @@
 package main
 
 import (
-	"fmt"
-	"github.com/WebDesign/config"
-	//"github.com/WebDesign/log"
-	"github.com/WebDesign/model"
-	//"go.uber.org/zap"
+	//"fmt"
+	//_ "github.com/WebDesign/handler/login"
+	//_ "github.com/WebDesign/handler/signup"
+	_ "github.com/WebDesign/handler/todo"
+	//_ "github.com/WebDesign/handler/user"
 
-	"time"
+	_ "github.com/WebDesign/config"
+	_ "github.com/WebDesign/log"
+
+	_ "github.com/WebDesign/database"
+	"github.com/WebDesign/router"
+
+	"github.com/gin-gonic/gin"
+	//"github.com/WebDesign/model"
+	//"go.uber.org/zap"
+	//"github.com/gin-gonic/gin"
+	//"github.com/gin-gonic/gin"
+	//"time"
 )
 
 func main() {
 
-	DB1 := model.GetDBInstance()
-	DB2 := model.GetDBInstance()
-	if DB1 == DB2 {
-		fmt.Println("equal")
-	}
-	c := config.GetConfigInfo()
-	fmt.Println(c.MySQL)
-	fmt.Println("main wait ")
-	//log.Info("ferjwfgnerk", zap.String("get", "tettttt"))
-	time.Sleep(time.Second * 30)
+	g := gin.New()
+	//路由初始化
+	router.SetupRoute(g)
+	g.Run()
+
 }

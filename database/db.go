@@ -1,4 +1,4 @@
-package model
+package database
 
 import (
 	"fmt"
@@ -12,7 +12,7 @@ import (
 )
 
 //第一种写法
-var db *gorm.DB
+var DB *gorm.DB
 var once sync.Once
 
 /* 第二种写法
@@ -43,10 +43,10 @@ func init() {
 
 func init() {
 	var err error
-	if db == nil {
+	if DB == nil {
 		once.Do(func() {
 			fmt.Println("Creating database single instance now.")
-			db, err = gorm.Open("mysql", getDBConfig())
+			DB, err = gorm.Open("mysql", getDBConfig())
 			if err != nil {
 				log.Fatal("Open database failed",
 					zap.String("reason", err.Error()),
@@ -65,7 +65,6 @@ func init() {
 }
 
 func getDBConfig() string {
-
 	username := config.GetGlobalConfig().GetString("mysql.user")
 	password := config.GetGlobalConfig().GetString("mysql.password")
 	addr := config.GetGlobalConfig().GetString("mysql.ip")
@@ -82,8 +81,8 @@ func getDBConfig() string {
 }
 
 func GetDBInstance() *gorm.DB {
-	return db
+	return DB
 }
 func DBInstanceClose() {
-	db.Close()
+	DB.Close()
 }

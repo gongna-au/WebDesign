@@ -1,1 +1,2 @@
 {"level":"info","time":"2022-06-01T20:02:49.274+0800","linenum":"/home/gongna/go/src/github.com/WebDesign/log/log.go:55","msg":"ferjwfgnerk","serviceName":"server","get":"tettttt"}
+{"level":"warn","time":"2022-07-10T21:01:38.081+0800","linenum":"/home/gongna/go/src/github.com/WebDesign/log/log.go:125","msg":"HTTP Warning 404","serviceName":"server","status":404,"request":"GET /api/v1/todos/","query":"","ip":"::1","user-agent":"PostmanRuntime/7.29.0","errors":"","time":"2.211ms"}

@@ -1,11 +1,31 @@
-AppName = "APP By Gongna"
+
+APP_NAME="WebDesign"
+APP_ENV="local"
+
+APP_DEBUG=true
+APP_URL="http://localhost:8080"
+APP_PORT=8080
+
 LogLevel = "DEBUG"
+
+[app]
+  key="zBqYyQrPNaIUsnRhsGtHLivjqiMjBVLS"
+  timezone="Asia/Beijing"
+  debug=true
+  name="WebDesign"
+
+
+[jwt]
+   max_refresh_time=86400
+   expired_time=120
+   debug_expire_time=43200
+   expire_time=21600
 
 [mysql]
   database = "Test"
   ip = "127.0.0.1"
   password = "123456"
-  port = 3306
+  port = 8806
   user = "gongna2"
 
 [redis]
@@ -13,5 +33,14 @@ LogLevel = "DEBUG"
   port = 4344
 
 [token]
-  expired: 30 # 过期时间 30 天
+  expired= 30 # 过期时间 30 天
+
+[paging]
+  url_query_order="order"
+  url_query_sort="sort"
+  url_query_per_page="perpage"
+  url_query_page="page"
+  perpage=10
+
+
   
