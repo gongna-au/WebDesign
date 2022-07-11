@@ -8,7 +8,6 @@ import (
 	"github.com/WebDesign/handler/signup"
 	"github.com/WebDesign/handler/todo"
 	"github.com/WebDesign/handler/user"
-
 	"github.com/WebDesign/middlewares"
 	"github.com/gin-gonic/gin"
 )

@@ -2,6 +2,7 @@ package user
 
 import (
 	"errors"
+	//"fmt"
 	"github.com/WebDesign/handler"
 	"github.com/WebDesign/log"
 	"github.com/WebDesign/model/requests"
@@ -16,19 +17,34 @@ type UsersController struct {
 
 // CurrentUser 当前登录用户信息
 func GetCurrentUser(c *gin.Context) {
-	userModel := CurrentUser(c)
+	userModel, err := CurrentUser(c)
+	if err != nil {
+		response.BadRequest(c, err, "User is not logged in")
+		return
+	}
 	response.Data(c, userModel)
 }
 
 // CurrentUser 从 gin.context 中获取当前登录用户
-func CurrentUser(c *gin.Context) user.User {
+func CurrentUser(c *gin.Context) (userModel user.User, err error) {
+
+	defer func() {
+		if x := recover(); x != nil {
+			//处理panic, 让程序从panicking状态恢复的机会
+			err = errors.New("Key current_user does not exist")
+			//c.AbortWithError(400, errors.New("Get CurrentUser error"))
+
+		}
+	}()
+
 	userModel, ok := c.MustGet("current_user").(user.User)
 	if !ok {
 		log.LogIf(errors.New("无法获取用户"))
-		return user.User{}
+		return userModel, errors.New("get current_user failed")
 	}
+
 	// db is now a *DB value
-	return userModel
+	return userModel, err
 }
 
 // GetUsers所有用户
@@ -52,7 +68,13 @@ func UpdateProfile(c *gin.Context) {
 		return
 	}
 
-	currentUser := CurrentUser(c)
+	currentUser, err := CurrentUser(c)
+	if err != nil {
+
+		response.BadRequest(c, err, "User is not logged in")
+		return
+
+	}
 	currentUser.Name = request.Name
 	currentUser.City = request.City
 	currentUser.Introduction = request.Introduction
@@ -60,6 +82,6 @@ func UpdateProfile(c *gin.Context) {
 	if rowsAffected > 0 {
 		response.Data(c, currentUser)
 	} else {
-		response.Abort500(c, "更新失败，请稍后尝试~")
+		response.Abort500(c, "更新失败,请稍后尝试~")
 	}
 }

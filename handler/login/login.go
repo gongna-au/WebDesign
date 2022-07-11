@@ -2,7 +2,7 @@ package login
 
 import (
 	"github.com/WebDesign/handler"
-	"github.com/WebDesign/model/loginModel"
+
 	"github.com/WebDesign/model/requests"
 	"github.com/WebDesign/model/response"
 	"github.com/WebDesign/pkg/jwt"
@@ -19,7 +19,7 @@ type LoginController struct {
 func LoginByPhone(c *gin.Context) {
 
 	// 1. 验证表单
-	request := loginModel.LoginByPhoneRequest{}
+	request := requests.LoginByPhoneRequest{}
 
 	if ok := handler.Validate(c, &request, requests.LoginByPhone); !ok {
 		return

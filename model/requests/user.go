@@ -1,6 +1,8 @@
 package requests
 
 import (
+	"errors"
+
 	"github.com/gin-gonic/gin"
 	"github.com/thedevsaddam/govalidator"
 )
@@ -49,12 +51,10 @@ type UserUpdateProfileRequest struct {
 
 func UserUpdateProfile(data interface{}, c *gin.Context) map[string][]string {
 
-	// 查询用户名重复时，过滤掉当前用户 ID
-	uid := CurrentUID(c)
 	rules := govalidator.MapData{
-		"name":         []string{"required", "alpha_num", "between:3,20", "not_exists:users,name," + uid},
-		"introduction": []string{"min_cn:4", "max_cn:240"},
-		"city":         []string{"min_cn:2", "max_cn:20"},
+		"name":         []string{"required", "between:3,20"},
+		"introduction": []string{"min:10", "max:100"},
+		"city":         []string{"min:1", "max:50"},
 	}
 
 	messages := govalidator.MapData{
@@ -84,6 +84,10 @@ func UserUpdateProfile(data interface{}, c *gin.Context) map[string][]string {
 	return govalidator.New(opts).ValidateStruct()
 }
 
-func CurrentUID(c *gin.Context) string {
-	return c.GetString("current_user_id")
+func CurrentUID(c *gin.Context) (string, error) {
+	if c.GetString("current_user_id") != "" {
+		return c.GetString("current_user_id"), nil
+	} else {
+		return "", errors.New("current_user_id is not exists")
+	}
 }

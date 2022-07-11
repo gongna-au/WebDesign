@@ -1,6 +1,8 @@
 package signup
 
 import (
+	//"fmt"
+
 	"github.com/WebDesign/handler"
 	"github.com/WebDesign/model/requests"
 	"github.com/WebDesign/model/response"
@@ -21,6 +23,7 @@ func SignupUsingPhone(c *gin.Context) {
 	request := requests.SignupUsingPhoneRequest{}
 	//requests.SignupUsingPhone 验证函数
 	if ok := handler.Validate(c, &request, requests.SignupUsingPhone); !ok {
+
 		return
 	}
 
@@ -48,13 +51,10 @@ func SignupUsingPhone(c *gin.Context) {
 func IsPhoneExist(c *gin.Context) {
 	// 获取请求参数，并做表单验证
 	request := requests.SignupPhoneExistRequest{}
-	errs := requests.SignupPhoneExist(&request, c)
-	if len(errs) > 0 {
-		//验证失败，返回422状态码和错误信息
-		response.ValidationError(c, errs)
+
+	if ok := handler.Validate(c, &request, requests.SignupPhoneExist); !ok {
 		return
 	}
-
 	//  检查数据库并返回响应
 	response.JSON(c, gin.H{
 		"exist": requests.IsPhoneExist(request.Phone),
@@ -64,10 +64,7 @@ func IsPhoneExist(c *gin.Context) {
 // IsEmailExist 检测邮箱是否已注册
 func IsEmailExist(c *gin.Context) {
 	request := requests.SignupEmailExistRequest{}
-	errs := requests.SignupPhoneExist(&request, c)
-	if len(errs) > 0 {
-		//验证失败，返回422状态码和错误信息
-		response.ValidationError(c, errs)
+	if ok := handler.Validate(c, &request, requests.SignupEmailExist); !ok {
 		return
 	}
 	response.JSON(c, gin.H{
